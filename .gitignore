@@ -1,5 +1,4 @@
-_build
+build
 .cproject
 .project
 .settings
-hex/*
