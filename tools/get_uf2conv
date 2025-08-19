@@ -1,0 +1,7 @@
+#!/bin/env sh
+
+git clone --no-checkout --depth=1 --filter=tree:0 https://github.com/microsoft/uf2
+cd uf2
+git sparse-checkout set --no-cone /utils
+git checkout
+rm -rf .git
