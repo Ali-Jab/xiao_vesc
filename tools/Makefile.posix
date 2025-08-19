@@ -1,0 +1,5 @@
+GNU_PREFIX ?= arm-none-eabi
+# GNU_VERSION ?= 14.2.0
+GNU_VERSION ?= $(shell $(GNU_PREFIX)-gcc --version | head -n 1 | sed 's/.* //')
+# GNU_INSTALL_ROOT ?= /usr/bin/
+GNU_INSTALL_ROOT ?= $(shell dirname `which $(GNU_PREFIX)-gcc`)/
