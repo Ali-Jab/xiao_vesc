@@ -1,6 +1,5 @@
-# Compile for NRF52832, otherwise for NRF52840
 PROJECT_NAME     := vesc_ble_uart
-OUTPUT_DIRECTORY := _build
+OUTPUT_DIRECTORY := build
 
 TARGETS          := nrf52840_xxaa
 
@@ -9,13 +8,13 @@ VERBOSE=1
 
 CFLAGS += $(build_args)
 
-# Path to the NRF52 SDK. Change if needed.
-SDK_ROOT := /home/benjamin/Dokument/nrf52/nRF5_SDK_15.3.0_59ac345
+# Path to the NRF52 SDK from environment variable. Change if needed.
+SDK_ROOT := $(NRF_SDK)
 
 TARGET_PATH := $(OUTPUT_DIRECTORY)/$(TARGETS).hex
 
 $(OUTPUT_DIRECTORY)/$(TARGETS).out: LINKER_SCRIPT := ld_sd_52840.ld
-SD_PATH := $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_6.1.1_softdevice.hex
+SD_PATH := $(firstword $(wildcard $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_*.*.*_softdevice.hex))
 
 # Source files
 SRC_FILES += \
@@ -288,7 +287,7 @@ INC_FOLDERS += \
 
 # Libraries common to all targets
 LIB_FILES += \
-  $(SDK_ROOT)/external/nrf_oberon/lib/cortex-m4/hard-float/liboberon_2.0.7.a
+  $(firstword $(wildcard $(SDK_ROOT)/external/nrf_oberon/lib/cortex-m4/hard-float/liboberon_*.*.*.a))
 
 # Optimization flags
 OPT = -O3 -g3
@@ -361,7 +360,7 @@ LIB_FILES += -lc -lnosys -lm
 .PHONY: default help
 
 # Default target - first one defined
-default: $(TARGETS)
+default: $(TARGETS) $(OUTPUT_DIRECTORY)/$(TARGETS).uf2
 
 TEMPLATE_PATH := $(SDK_ROOT)/components/toolchain/gcc
 
@@ -390,3 +389,5 @@ merge_hex: $(TARGET_PATH)
 	srec_cat $(SD_PATH) -intel $(TARGET_PATH) -intel -o hex/merged.hex -intel --line-length=44
 	arm-none-eabi-objcopy -I ihex -O binary hex/merged.hex hex/merged.bin --gap-fill 0xFF
 	
+$(OUTPUT_DIRECTORY)/$(TARGETS).uf2: $(TARGET_PATH)
+	python3 tools/uf2/utils/uf2conv.py -f NRF52840 -o $@ -i $<
