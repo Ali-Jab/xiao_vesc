@@ -21,6 +21,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#include "config.h"
+
 #include "nordic_common.h"
 #include "nrf.h"
 #include "ble_hci.h"
@@ -68,140 +70,7 @@
 #include "esb_timeslot.h"
 #include "crc.h"
 
-#ifndef MODULE_BUILTIN
-#define MODULE_BUILTIN					1
-#endif
-
-#ifndef MODULE_RD2
-#define MODULE_RD2						0
-#endif
-
-#ifndef MODULE_RD_BMS
-#define MODULE_RD_BMS					0
-#endif
-
-#define USE_SLEEP						0
-#define USE_USB							0
-
-#ifdef NRF52840_XXAA
-#if MODULE_BUILTIN
-#define DEVICE_NAME                     "VESC 52840 BUILTIN"
-#elif MODULE_RD2
-#define DEVICE_NAME                     "VESC RAD2"
-#elif MODULE_STORMCORE
-#define DEVICE_NAME                     "STORMCORE"
-#elif MODULE_RD_BMS
-#define DEVICE_NAME                     "VESC RBAT BMS"
-#else
-#define DEVICE_NAME                     "VESC 52840 UART"
-#endif
-#else
-#if MODULE_BUILTIN
-#define DEVICE_NAME                     "VESC 52832 BUILTIN"
-#else
-#define DEVICE_NAME                     "VESC 52832 UART"
-#endif
-#endif
-
-#define SEC_PARAM_BOND                  1                                           /**< Perform bonding. */
-#define SEC_PARAM_MITM                  1                                           /**< Man In The Middle protection required (applicable when display module is detected). */
-#define SEC_PARAM_LESC                  1                                           /**< LE Secure Connections enabled. */
-#define SEC_PARAM_KEYPRESS              0                                           /**< Keypress notifications not enabled. */
-#define SEC_PARAM_IO_CAPABILITIES       BLE_GAP_IO_CAPS_DISPLAY_ONLY                /**< Display I/O capabilities. */
-#define SEC_PARAM_OOB                   0                                           /**< Out Of Band data not available. */
-#define SEC_PARAM_MIN_KEY_SIZE          7                                           /**< Minimum encryption key size. */
-#define SEC_PARAM_MAX_KEY_SIZE          16                                          /**< Maximum encryption key size. */
-
 static pm_peer_id_t m_peer_to_be_deleted = PM_PEER_ID_INVALID;
-
-#define APP_BLE_CONN_CFG_TAG            1                                           /**< A tag identifying the SoftDevice BLE configuration. */
-
-#define NUS_SERVICE_UUID_TYPE           BLE_UUID_TYPE_VENDOR_BEGIN                  /**< UUID type for the Nordic UART Service (vendor specific). */
-
-#define APP_BLE_OBSERVER_PRIO           3                                           /**< Application's BLE observer priority. You shouldn't need to modify this value. */
-
-#define APP_ADV_INTERVAL                64                                          /**< The advertising interval (in units of 0.625 ms. This value corresponds to 40 ms). */
-#define APP_ADV_DURATION                100                                         /**< The advertising duration (180 seconds) in units of 10 milliseconds. */
-
-#define MIN_CONN_INTERVAL               MSEC_TO_UNITS(15, UNIT_1_25_MS)             /**< Minimum acceptable connection interval (20 ms), Connection interval uses 1.25 ms units. */
-#define MAX_CONN_INTERVAL               MSEC_TO_UNITS(30, UNIT_1_25_MS)             /**< Maximum acceptable connection interval (75 ms), Connection interval uses 1.25 ms units. */
-#define SLAVE_LATENCY                   0                                           /**< Slave latency. */
-#define CONN_SUP_TIMEOUT                MSEC_TO_UNITS(4000, UNIT_10_MS)             /**< Connection supervisory timeout (4 seconds), Supervision Timeout uses 10 ms units. */
-#define FIRST_CONN_PARAMS_UPDATE_DELAY  APP_TIMER_TICKS(5000)                       /**< Time from initiating event (connect or start of notification) to first time sd_ble_gap_conn_param_update is called (5 seconds). */
-#define NEXT_CONN_PARAMS_UPDATE_DELAY   APP_TIMER_TICKS(30000)                      /**< Time between each call to sd_ble_gap_conn_param_update after the first call (30 seconds). */
-#define MAX_CONN_PARAMS_UPDATE_COUNT    3                                           /**< Number of attempts before giving up the connection parameter negotiation. */
-
-#define DEAD_BEEF                       0xDEADBEEF                                  /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
-
-#ifdef NRF52840_XXAA
-#define UART_TX_BUF_SIZE                16384
-#define UART_RX_BUF_SIZE                16384
-#else
-#define UART_TX_BUF_SIZE                2048
-#define UART_RX_BUF_SIZE                8192
-#endif
-
-#define PACKET_VESC						0
-#define PACKET_BLE						1
-
-#define LED_ON()						nrf_gpio_pin_set(LED_PIN)
-#define LED_OFF()						nrf_gpio_pin_clear(LED_PIN)
-
-#ifdef NRF52840_XXAA
-#if MODULE_BUILTIN
-#define UART_RX							26
-#define UART_TX							25
-#define UART_TX_DISABLED				28
-#define LED_PIN							27
-#elif MODULE_RD2
-#define UART_RX							11
-#define UART_TX							12
-#define UART_TX_DISABLED				18
-#define LED_PIN							15
-#elif MODULE_STORMCORE
-#define UART_RX							31
-#define UART_TX							30
-#define UART_TX_DISABLED				29
-#define LED_PIN							5
-#elif MODULE_RD_BMS
-#define UART_RX							4
-#define UART_TX							5
-#define UART_TX_DISABLED				2
-#define LED_PIN							NRF_GPIO_PIN_MAP(1, 5)
-#undef LED_ON
-#undef LED_OFF
-#define LED_ON()						nrf_gpio_pin_set(NRF_GPIO_PIN_MAP(1, 1)); nrf_gpio_pin_clear(LED_PIN)
-#define LED_OFF()						nrf_gpio_pin_set(LED_PIN)
-#else
-#define UART_RX							11
-#define UART_TX							8
-#define UART_TX_DISABLED				25
-#define LED_PIN							7
-#endif
-#else
-#if MODULE_BUILTIN
-#define UART_RX							6
-#define UART_TX							7
-#define UART_TX_DISABLED				25
-#define EN_DEFAULT						1
-#define LED_PIN							8
-#define LED_PIN2_INV					5
-#else
-#define UART_RX							7
-#define UART_TX							6
-#define UART_TX_DISABLED				25
-#define EN_DEFAULT						1
-#define LED_PIN							8
-#endif
-#endif
-
-// Alternative inverted LED pin
-#ifdef LED_PIN2_INV
-#undef LED_ON
-#undef LED_OFF
-#define LED_ON()						nrf_gpio_pin_set(LED_PIN); nrf_gpio_pin_clear(LED_PIN2_INV)
-#define LED_OFF()						nrf_gpio_pin_clear(LED_PIN); nrf_gpio_pin_set(LED_PIN2_INV)
-#endif
 
 // Private variables
 APP_TIMER_DEF(m_packet_timer);
