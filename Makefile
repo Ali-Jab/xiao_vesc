@@ -15,6 +15,7 @@ CFLAGS += -DAPP_USBD_DEVICE_VER_SUB=APP_USBD_DEVICE_VER_MINOR
 SDK_ROOT := $(NRF_SDK)
 
 TARGET_PATH := $(OUTPUT_DIRECTORY)/$(TARGETS).hex
+FIRMWARE_UF2_PATH := $(OUTPUT_DIRECTORY)/$(TARGETS).uf2
 
 $(OUTPUT_DIRECTORY)/$(TARGETS).out: LINKER_SCRIPT := ld_sd_52840.ld
 SD_PATH := $(firstword $(wildcard $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_*.*.*_softdevice.hex))
@@ -378,19 +379,8 @@ CMSIS_CONFIG_TOOL := $(SDK_ROOT)/external_tools/cmsisconfig/CMSIS_Configuration_
 sdk_config:
 	java -jar $(CMSIS_CONFIG_TOOL) $(SDK_CONFIG_FILE)
 
-upload: $(TARGET_PATH)
-	openocd -f openocd.cfg -c "program $(TARGET_PATH) verify reset exit"
-
-upload_sd:
-	openocd -f openocd.cfg -c "program $(SD_PATH) verify reset exit"
-
-mass_erase:
-	openocd -f openocd.cfg -c "init" -c "halt" -c "nrf5 mass_erase" -c "exit"
-
-merge_hex: $(TARGET_PATH)
-	mkdir -p hex
-	srec_cat $(SD_PATH) -intel $(TARGET_PATH) -intel -o hex/merged.hex -intel --line-length=44
-	arm-none-eabi-objcopy -I ihex -O binary hex/merged.hex hex/merged.bin --gap-fill 0xFF
-	
-$(OUTPUT_DIRECTORY)/$(TARGETS).uf2: $(TARGET_PATH)
+$(FIRMWARE_UF2_PATH): $(TARGET_PATH)
 	python3 tools/uf2/utils/uf2conv.py -f NRF52840 -o $@ -i $<
+
+flash: $(FIRMWARE_UF2_PATH)
+	sudo mount /dev/`lsblk -no KNAME | fzf` /mnt && sudo cp -v $< /mnt
