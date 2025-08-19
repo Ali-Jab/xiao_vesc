@@ -24,6 +24,8 @@
 #define CONFIG_FILE     (0xF010)
 #define CONFIG_REC_KEY  (0x7010)
 
+#define FDS_SUCCESS NRF_SUCCESS
+
 // Variables
 config_data m_config;
 static volatile bool m_fds_initialized = false;
