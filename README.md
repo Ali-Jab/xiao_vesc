@@ -7,6 +7,8 @@ Please read carefully original Vedder's README.md file.
 
 Nice!Nano V2 compatible chinese clone board
 
+https://kriscables.com/wp-content/uploads/2023/12/Supermini-nRF52840-Pinout.jpg
+
 * cheap
 * compact
 * easy to flash
