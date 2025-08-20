@@ -284,7 +284,7 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/crypto/backend/cifra \
   $(SDK_ROOT)/components/libraries/crypto \
   $(SDK_ROOT)/components/libraries/stack_info \
-  $(SDK_ROOT)/external/micro-ecc/micro-ecc \
+  $(SDK_ROOT)/external/micro-ecc \
   . \
   sdk_mod
 
@@ -360,7 +360,7 @@ $(TARGETS): ASMFLAGS += -D__STACK_SIZE=8192
 LIB_FILES += -lc -lnosys -lm
 
 
-.PHONY: default help
+.PHONY: default flash help
 
 # Default target - first one defined
 default: $(TARGETS) $(OUTPUT_DIRECTORY)/$(TARGETS).uf2
@@ -371,10 +371,9 @@ include $(TEMPLATE_PATH)/Makefile.common
 
 $(foreach target, $(TARGETS), $(call define_target, $(target)))
 
-.PHONY: flash flash_softdevice erase
-
 SDK_CONFIG_FILE := ./sdk_config.h
 CMSIS_CONFIG_TOOL := $(SDK_ROOT)/external_tools/cmsisconfig/CMSIS_Configuration_Wizard.jar
+
 sdk_config:
 	java -jar $(CMSIS_CONFIG_TOOL) $(SDK_CONFIG_FILE)
 
