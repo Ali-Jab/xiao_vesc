@@ -4,23 +4,21 @@ BLE bridge for VESC controllers using nice!nano board.
 
 This is a fork of https://github.com/vedderb/nrf52_vesc
 
+No major changes, the code is cleaned, compilation errors were fixed, some improvements were added
+for ease of use.
 
 ## Supported board
 
-Nice!Nano V2 compatible chinese clone board
+nice!nano v2 compatible chinese clone also can be found as `ProMico nRF52840` or `SuperMini nRF52840`.
+It's cheap, small and easy to flash - just copy firmware to USB storage, no additional tools needed.
 
-![pinout](https://kriscables.com/wp-content/uploads/2023/12/Supermini-nRF52840-Pinout.jpg)
-
-* cheap
-* compact
-* easy to flash - just copy firmware to USB storage
-
-The exact board is described [here](https://kriscables.com/supermini-nrf52840/)\
-The original Nice!Nano v2 [schematic](https://nicekeyboards.com/docs/nice-nano/pinout-schematic)
+* Buy it from [Aliexpress](https://www.aliexpress.com/w/wholesale-nice-nano-v2-nfr52840-board.html)
+* Exact board is described [here](https://kriscables.com/supermini-nrf52840/)
+* Original nice!nano v2 [schematic](https://nicekeyboards.com/docs/nice-nano/pinout-schematic)
 
 ## Build
 
-Only x86 Linux is supported as build platform for now
+Only x86 Linux is supported as build platform for now.
 
 ### Software requirements
 
