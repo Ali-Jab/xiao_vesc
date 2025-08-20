@@ -772,10 +772,6 @@ static void go_to_sleep(void) {
 	*(volatile uint32_t *)0x40028FFC;       //
 	*(volatile uint32_t *)0x40028FFC = 1;   // Power on UARTE1 so it is ready for next time
 
-#ifdef MODULE_RD_BMS
-	nrf_gpio_pin_clear(NRF_GPIO_PIN_MAP(1, 1));
-#endif
-
 	if (nrf_sdh_is_enabled()) {
 		nrf_sdh_disable_request();
 		while (nrf_sdh_is_enabled()) {}
@@ -800,14 +796,6 @@ int main(void) {
 
 #ifdef LED_PIN2_INV
 	nrf_gpio_cfg_output(LED_PIN2_INV);
-#endif
-
-#if MODULE_RD_BMS
-	nrf_gpio_cfg_output(NRF_GPIO_PIN_MAP(1, 1));
-	LED_ON();
-	nrf_delay_ms(5);
-	nrf_gpio_pin_clear(NRF_GPIO_PIN_MAP(1, 1));
-	LED_OFF();
 #endif
 
 #if defined(NRF52840_XXAA) && USE_USB
