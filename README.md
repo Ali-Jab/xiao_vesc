@@ -1,6 +1,6 @@
 # nicenano_vesc
 
-BLE bridge for VESC controllers using nice!nano board.
+BLE-UART bridge for VESC using nice!nano board.
 
 This is a fork of https://github.com/vedderb/nrf52_vesc
 
@@ -14,6 +14,7 @@ It's cheap, small and easy to flash - just copy firmware to USB storage, no addi
 
 * Buy it from [Aliexpress](https://www.aliexpress.com/w/wholesale-nice-nano-v2-nfr52840-board.html)
 * Exact board is described [here](https://kriscables.com/supermini-nrf52840/)
+* Board [wiki](https://github.com/joric/nrfmicro/wiki/Alternatives#supermini-nrf52840)
 * Original nice!nano v2 [schematic](https://nicekeyboards.com/docs/nice-nano/pinout-schematic)
 
 ## Build
@@ -65,7 +66,3 @@ Disconnect from USB if you power nice!nano from VESC or in other case disconnect
 | P0.11 (RX) | TX
 | P0.8 (TX)  | RX
 | VCC/3.3V   | 3.3V
-
-## Links
-
-* https://www.seeedstudio.com/blog/2019/08/07/introducing-nrf52832-and-nrf52840-product-family/
