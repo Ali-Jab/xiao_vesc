@@ -1,7 +1,9 @@
 # nicenano_vesc
 
-This is a fork of https://github.com/vedderb/nrf52_vesc that aims to support nRF52840 Nice!Nano board without pain.
-Please read carefully original Vedder's README.md file.
+BLE bridge for VESC controllers using nice!nano board.
+
+This is a fork of https://github.com/vedderb/nrf52_vesc
+
 
 ## Supported board
 
@@ -16,22 +18,53 @@ Nice!Nano V2 compatible chinese clone board
 The exact board is described [here](https://kriscables.com/supermini-nrf52840/)\
 The original Nice!Nano v2 [schematic](https://nicekeyboards.com/docs/nice-nano/pinout-schematic)
 
-## Build process
+## Build
 
 Only x86 Linux is supported as build platform for now
 
 ### Software requirements
 
-* Nordic nRF5 SDK v17.1.0
-    https://www.nordicsemi.com/Products/Development-software/nRF5-SDK/Download
-* ARM GCC toolchain
-* fzf
+* Nordic [nRF5 SDK v17.1.0](https://www.nordicsemi.com/Products/Development-software/nRF5-SDK/Download)
+* ARM GCC toolchain, install `arm-none-eabi-gcc`, `arm-none-eabi-binutils` with your package manager
 
 ### Configure
 
+* Set `NRF_SDK` environment variable to your nRF5 SDK path or set it in the `Makefile`
+
+```
+NRF_SDK=$HOME/.local/opt/nRF5_SDK_17.1.0_ddde560
+```
+
+* Copy nRF5 SDK toolchain configuration `Makefile` to your installed SDK
+
+```
+cp -f tools/Makefile.posix $NRF_SDK/components/toolchain/gcc
+```
+
 ### Compile
 
-### Flash
+```
+make -j8
+```
+
+## Flash
+
+Connect nice!nano to USB, quickly short RST pin to GND twice (for DFU mode) and:
+
+```
+make flash
+```
+
+## Connect
+
+Disconnect from USB if you power nice!nano from VESC or in other case disconnect VCC/3.3V pin
+
+| nice!nano  | VESC
+|------------|-----------
+| GND        | GND
+| P0.11 (RX) | TX
+| P0.8 (TX)  | RX
+| VCC/3.3V   | 3.3V
 
 ## Links
 
