@@ -11,10 +11,10 @@ Nice!Nano V2 compatible chinese clone board
 
 * cheap
 * compact
-* easy to flash
+* easy to flash - just copy firmware to USB storage
 
-The exact board is described here: https://kriscables.com/supermini-nrf52840/
-The original Nice!Nano v2 schematic: https://nicekeyboards.com/docs/nice-nano/pinout-schematic
+The exact board is described [here](https://kriscables.com/supermini-nrf52840/)\
+The original Nice!Nano v2 [schematic](https://nicekeyboards.com/docs/nice-nano/pinout-schematic)
 
 ## Build process
 
@@ -22,7 +22,8 @@ Only x86 Linux is supported as build platform for now
 
 ### Software requirements
 
-* Nordic NRF52 SDK
+* Nordic nRF5 SDK v17.1.0
+    https://www.nordicsemi.com/Products/Development-software/nRF5-SDK/Download
 * ARM GCC toolchain
 * fzf
 
@@ -31,3 +32,7 @@ Only x86 Linux is supported as build platform for now
 ### Compile
 
 ### Flash
+
+## Links
+
+* https://www.seeedstudio.com/blog/2019/08/07/introducing-nrf52832-and-nrf52840-product-family/
