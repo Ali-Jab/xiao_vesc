@@ -18,7 +18,6 @@ TARGET_PATH := $(OUTPUT_DIRECTORY)/$(TARGETS).hex
 FIRMWARE_UF2_PATH := $(OUTPUT_DIRECTORY)/$(TARGETS).uf2
 
 $(OUTPUT_DIRECTORY)/$(TARGETS).out: LINKER_SCRIPT := ld_sd_52840.ld
-SD_PATH := $(firstword $(wildcard $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_*.*.*_softdevice.hex))
 
 # Source files
 SRC_FILES += \
