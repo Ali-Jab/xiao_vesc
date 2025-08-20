@@ -9,7 +9,7 @@ for ease of use.
 
 ## Supported board
 
-nice!nano v2 compatible chinese clone also can be found as `ProMico nRF52840` or `SuperMini nRF52840`.
+`nice!nano v2` compatible chinese clone also can be found as `ProMico nRF52840` or `SuperMini nRF52840`.
 It's cheap, small and easy to flash - just copy firmware to USB storage, no additional tools needed.
 
 * Buy it from [Aliexpress](https://www.aliexpress.com/w/wholesale-nice-nano-v2-nfr52840-board.html)
@@ -47,11 +47,13 @@ make -j8
 
 ## Flash
 
-Connect nice!nano to USB, quickly short RST pin to GND twice (for DFU mode) and:
+Connect nice!nano to USB, quickly short RST pin to GND twice (for DFU mode, red LED should be ON) and:
 
 ```
 make flash
 ```
+
+Wait untill /mnt is unmounted by bootloader and red LED is OFF.
 
 ## Connect
 
