@@ -38,19 +38,7 @@
 #define PACKET_VESC						0
 #define PACKET_BLE						1
 
-#define LED_ON()						nrf_gpio_pin_set(LED_PIN)
-#define LED_OFF()						nrf_gpio_pin_clear(LED_PIN)
-
-// Alternative inverted LED pin
-#ifdef LED_PIN2_INV
-#undef LED_ON
-#undef LED_OFF
-#define LED_ON()						nrf_gpio_pin_set(LED_PIN); nrf_gpio_pin_clear(LED_PIN2_INV)
-#define LED_OFF()						nrf_gpio_pin_clear(LED_PIN); nrf_gpio_pin_set(LED_PIN2_INV)
-#endif
-
 // PINS assignment
 #define UART_RX							11
 #define UART_TX							8
 #define UART_TX_DISABLED				25
-#define LED_PIN							7

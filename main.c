@@ -142,14 +142,12 @@ APP_USBD_CDC_ACM_GLOBAL_DEF(m_app_cdc_acm,
 static void cdc_acm_user_ev_handler(app_usbd_class_inst_t const * p_inst, app_usbd_cdc_acm_user_event_t event) {
 	switch (event) {
 	case APP_USBD_CDC_ACM_USER_EVT_PORT_OPEN: {
-//		nrf_gpio_pin_set(LED_PIN);
 		// Setup first transfer
 		char rx;
 		app_usbd_cdc_acm_read(&m_app_cdc_acm, &rx, 1);
 		break;
 	}
 	case APP_USBD_CDC_ACM_USER_EVT_PORT_CLOSE:
-//		nrf_gpio_pin_clear(LED_PIN);
 		break;
 	case APP_USBD_CDC_ACM_USER_EVT_TX_DONE:
 		break;
@@ -369,7 +367,6 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context) {
 
 	switch (p_ble_evt->header.evt_id) {
 	case BLE_GAP_EVT_CONNECTED:
-		LED_ON();
 		m_peer_to_be_deleted = PM_PEER_ID_INVALID;
 		m_conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
 		nrf_ble_qwr_conn_handle_assign(&m_qwr, m_conn_handle);
@@ -377,7 +374,6 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context) {
 		break;
 
 	case BLE_GAP_EVT_DISCONNECTED:
-		LED_OFF();
 		m_conn_handle = BLE_CONN_HANDLE_INVALID;
 		m_disconnect_cnt = 100;
 		if (m_peer_to_be_deleted != PM_PEER_ID_INVALID) {
@@ -754,13 +750,8 @@ static void go_to_sleep(void) {
 	app_timer_stop_all();
 	esb_timeslot_sd_stop();
 
-	nrf_gpio_cfg_default(LED_PIN);
 	nrf_gpio_cfg_default(UART_RX);
 	nrf_gpio_cfg_default(UART_TX);
-
-#ifdef LED_PIN2_INV
-	nrf_gpio_cfg_default(LED_PIN2_INV);
-#endif
 
 	// Workaround current consumption issue by power cycling the UART peripherals
 	// https://devzone.nordicsemi.com/f/nordic-q-a/42883/current-consumption-when-using-timer-and-scheduler-alongwith-nrf_pwr_mgmt_run/167545#167545
@@ -792,11 +783,6 @@ static void go_to_sleep(void) {
 #endif
 
 int main(void) {
-	nrf_gpio_cfg_output(LED_PIN);
-
-#ifdef LED_PIN2_INV
-	nrf_gpio_cfg_output(LED_PIN2_INV);
-#endif
 
 #if defined(NRF52840_XXAA) && USE_USB
 	nrf_drv_clock_init();
