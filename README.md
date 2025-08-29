@@ -9,7 +9,7 @@ for ease of use.
 
 ## Supported board
 
-`nice!nano v2` compatible chinese clone also can be found as `ProMico nRF52840` or `SuperMini nRF52840`.
+`nice!nano v2` compatible chinese clone also can be found as `ProMicro nRF52840` or `SuperMini nRF52840`.
 It's cheap, small and easy to flash - just copy firmware to USB storage, no additional tools needed.
 
 * Buy it from [Aliexpress](https://www.aliexpress.com/w/wholesale-nice-nano-v2-nfr52840-board.html)
@@ -19,7 +19,7 @@ It's cheap, small and easy to flash - just copy firmware to USB storage, no addi
 
 ## Build
 
-Only x86 Linux is supported as build platform for now.
+Only x86 Linux is supported as build platform for now (tested on Artix).
 
 ### Software requirements
 
@@ -34,7 +34,7 @@ Only x86 Linux is supported as build platform for now.
 NRF_SDK=$HOME/.local/opt/nRF5_SDK_17.1.0_ddde560
 ```
 
-* Copy nRF5 SDK toolchain configuration `Makefile` to your installed SDK
+* Copy nRF5 SDK toolchain configuration `Makefile.posix` to your installed SDK
 
 ```
 cp -f tools/Makefile.posix $NRF_SDK/components/toolchain/gcc
@@ -56,7 +56,7 @@ make flash
 
 Wait untill /mnt is unmounted by bootloader and red LED is OFF.
 
-## Connect
+## Connect to VESC
 
 Disconnect from USB if you power nice!nano from VESC or in other case disconnect VCC/3.3V pin
 
