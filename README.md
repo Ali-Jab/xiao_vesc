@@ -28,10 +28,10 @@ Only x86 Linux is supported as build platform for now (tested on Artix).
 
 ### Configure
 
-* Set `NRF_SDK` environment variable to your nRF5 SDK path or set it in the `Makefile`
+* Set SDK_ROOT variable in Makefile to actual nRF5 SDK path, i.e.
 
 ```
-NRF_SDK=$HOME/.local/opt/nRF5_SDK_17.1.0_ddde560
+SDK_ROOT := $(HOME)/.local/opt/nRF5_SDK_17.1.0_ddde560
 ```
 
 * Copy nRF5 SDK toolchain configuration `Makefile.posix` to your installed SDK

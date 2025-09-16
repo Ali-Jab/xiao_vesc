@@ -11,8 +11,7 @@ CFLAGS += $(build_args)
 # Hack to compile USBD support without errors
 CFLAGS += -DAPP_USBD_DEVICE_VER_SUB=APP_USBD_DEVICE_VER_MINOR
 
-# Path to the NRF52 SDK from environment variable. Change if needed.
-SDK_ROOT := $(NRF_SDK)
+SDK_ROOT := $(HOME)/.local/opt/nRF5_SDK_17.1.0_ddde560
 
 TARGET_PATH := $(OUTPUT_DIRECTORY)/$(TARGETS).hex
 FIRMWARE_UF2_PATH := $(OUTPUT_DIRECTORY)/$(TARGETS).uf2
