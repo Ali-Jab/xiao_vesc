@@ -380,11 +380,13 @@ $(FIRMWARE_UF2_PATH): $(TARGET_PATH)
 	python3 tools/uf2/utils/uf2conv.py -f NRF52840 -o $@ -i $<
 
 flash: $(FIRMWARE_UF2_PATH)
-	@DEVSTR=$$(lsblk -no KNAME,MODEL | grep "nRF UF2"); \
-	if [ "$$DEVSTR" ]; then \
-	  UF2DEV=$$(echo $$DEVSTR | awk '{ print "/dev/" $$1 }'); \
+	@echo "===> Flashing firmware"
+	@DEVSTR=$$(lsblk -no PATH,MODEL | grep "nRF UF2"); \
+	if [[ "$$DEVSTR" ]]; then \
+	  DEVPATH=$$(echo $$DEVSTR | awk '{ print $$1 }'); \
 	else \
 	  echo "Error: nRF UF2 device not found!"; exit 1; \
 	fi; \
 	sudo umount -q /mnt; \
-	sudo mount $$UF2DEV /mnt &&	sudo cp -v $< /mnt
+	sudo mount $$DEVPATH /mnt && sudo cp -fv $< /mnt
+	@ls -l /mnt
