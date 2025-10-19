@@ -1,4 +1,4 @@
-# nicenano_vesc
+# XIAO nRF52840
 
 BLE-UART bridge for VESC using XIAO nRF52840 board.
 
