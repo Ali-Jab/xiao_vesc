@@ -1,25 +1,22 @@
 # nicenano_vesc
 
-BLE-UART bridge for VESC using nice!nano board.
+BLE-UART bridge for VESC using XIAO nRF52840 board.
 
-This is a fork of https://github.com/vedderb/nrf52_vesc
+This is a fork of https://github.com/nick133/nicenano_vesc
 
-No major changes, the code is cleaned, compilation errors were fixed, some improvements were added
-for ease of use.
+No major changes, made compatible with XIAO nRF52840 Tx and Rx pins (D6 (1, 11) and D7 (1, 12)).
+The XIAO uses a Seeed/Adafruit-style UF2 bootloader; the Seeed builds typically bundle S140 v7.x.
+This app uses S140 v6.1.1. I tried to edit the code to make it work but I did not manage to make it work.
+A workaround is to d flash S140 v6.1.1 then flash the app.
+
 
 ## Supported board
 
-`nice!nano v2` compatible chinese clone also can be found as `ProMicro nRF52840` or `SuperMini nRF52840`.
-It's cheap, small and easy to flash - just copy firmware to USB storage, no additional tools needed.
-
-* Buy it from [Aliexpress](https://www.aliexpress.com/w/wholesale-nice-nano-v2-nfr52840-board.html)
-* Exact board is described [here](https://kriscables.com/supermini-nrf52840/)
-* Board [wiki](https://github.com/joric/nrfmicro/wiki/Alternatives#supermini-nrf52840)
-* Original nice!nano v2 [schematic](https://nicekeyboards.com/docs/nice-nano/pinout-schematic)
+`XIAO nRF52840`
 
 ## Build
 
-Only x86 Linux is supported as build platform for now (tested on Artix).
+Only x86 Linux is supported as build platform for now (tested on Ubuntu).
 
 ### Software requirements
 
@@ -48,21 +45,31 @@ make -j8
 
 ## Flash
 
-Connect nice!nano to USB, quickly short RST pin to GND twice (for DFU mode, red LED should be ON) and:
+Connect XIAO nRF52840 to USB, quickly press RST button twice (for DFU mode) and:
+
+!!!IMPORTATNT!!!
+
+Copy s140v6.uf2 to XIAO.
+
+Wait untill /mnt is unmounted by bootloader and quickly press RST button twice (for DFU mode) and:
 
 ```
-make flash
+copy nrf52840_xxaa.uf2 to XIAO.
+
+or
+
+make flash 
 ```
 
-Wait untill /mnt is unmounted by bootloader and red LED is OFF.
+Wait untill /mnt is unmounted by bootloader and blinks yellow every 3.5 seconds.
 
 ## Connect to VESC
 
 Disconnect from USB if you power nice!nano from VESC or in other case disconnect VCC/3.3V pin
 
-| nice!nano  | VESC
+| XIAO 52840 | VESC
 |------------|-----------
 | GND        | GND
-| P0.11 (RX) | TX
-| P0.8 (TX)  | RX
+| D7 (RX)    | TX
+| D6 (TX)    | RX
 | VCC/3.3V   | 3.3V
