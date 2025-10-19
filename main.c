@@ -75,6 +75,31 @@ static pm_peer_id_t m_peer_to_be_deleted = PM_PEER_ID_INVALID;
 // Private variables
 APP_TIMER_DEF(m_packet_timer);
 APP_TIMER_DEF(m_nrf_timer);
+APP_TIMER_DEF(REDGREEN_LED_TIMER);
+
+// Pick the right pins for your board:
+#define RED_LED_PIN   NRF_GPIO_PIN_MAP(0, 26)
+#define GREEN_LED_PIN NRF_GPIO_PIN_MAP(0, 30)
+#define BLUE_LED_PIN  NRF_GPIO_PIN_MAP(0,  6)
+
+
+static void led_init(void) {
+	nrf_gpio_cfg_output(RED_LED_PIN);
+	nrf_gpio_pin_set(RED_LED_PIN);     // OFF
+
+	nrf_gpio_cfg_output(GREEN_LED_PIN);
+	nrf_gpio_pin_set(GREEN_LED_PIN);   // OFF
+
+	nrf_gpio_cfg_output(BLUE_LED_PIN);
+	nrf_gpio_pin_set(BLUE_LED_PIN);    // OFF
+}
+
+
+static void led_blink_non_blocking(void *p_ctx) {
+    (void)p_ctx;
+    nrf_gpio_pin_toggle(RED_LED_PIN);
+	nrf_gpio_pin_toggle(GREEN_LED_PIN);
+}
 
 BLE_NUS_DEF(m_nus, NRF_SDH_BLE_TOTAL_LINK_COUNT);                                   /**< BLE NUS service instance. */
 NRF_BLE_GATT_DEF(m_gatt);                                                           /**< GATT module instance. */
@@ -803,6 +828,7 @@ int main(void) {
 	NRF_WDT->RREN |= WDT_RREN_RR0_Msk;
 	NRF_WDT->TASKS_START = 1;
 
+	led_init();
 	storage_init();
 	uart_init();
 	app_timer_init();
@@ -828,6 +854,9 @@ int main(void) {
 
 	app_timer_create(&m_nrf_timer, APP_TIMER_MODE_SINGLE_SHOT, nrf_timer_handler);
 	app_timer_start(m_nrf_timer, APP_TIMER_TICKS(1200), NULL);
+
+	app_timer_create(&REDGREEN_LED_TIMER, APP_TIMER_MODE_REPEATED, led_blink_non_blocking);
+	app_timer_start(REDGREEN_LED_TIMER, APP_TIMER_TICKS(3500), NULL);
 
 	esb_timeslot_init(esb_timeslot_data_handler);
 	esb_timeslot_sd_start();
