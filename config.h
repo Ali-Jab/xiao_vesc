@@ -1,5 +1,5 @@
 
-#define DEVICE_NAME                     "VESC 52840 UART"
+#define DEVICE_NAME                     "VESC XIAO nRF52840 UART"
 
 #define USE_SLEEP						0
 #define USE_USB							0
@@ -39,6 +39,7 @@
 #define PACKET_BLE						1
 
 // PINS assignment
-#define UART_RX							11
-#define UART_TX							8
-#define UART_TX_DISABLED				25
+#define UART_RX							NRF_GPIO_PIN_MAP(1, 11)
+#define UART_TX							NRF_GPIO_PIN_MAP(1, 12)
+#define UART_TX_DISABLED				NRF_GPIO_PIN_MAP(0, 29)
+#define LED_PIN                         NRF_GPIO_PIN_MAP(0, 26)
