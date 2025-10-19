@@ -39,7 +39,7 @@
 #define PACKET_BLE						1
 
 // PINS assignment
-#define UART_RX							NRF_GPIO_PIN_MAP(1, 11)
-#define UART_TX							NRF_GPIO_PIN_MAP(1, 12)
+#define UART_RX							NRF_GPIO_PIN_MAP(1, 12)
+#define UART_TX							NRF_GPIO_PIN_MAP(1, 11)
 #define UART_TX_DISABLED				NRF_GPIO_PIN_MAP(0, 29)
 #define LED_PIN                         NRF_GPIO_PIN_MAP(0, 26)
